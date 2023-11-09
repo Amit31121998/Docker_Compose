@@ -1,23 +1,26 @@
-version: "3"
+version: "3.8"
 services:
   application:
     image: spring-boot-mysql-app
     ports:
       - "8080:8080"
-    networks:
-      - springboot-db-net
+    environment:
+      SPRING_DATASOURCE_URL : jdbc:mysql://mysqldb:3306/sbms
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: root
+      
     depends_on:
       - mysqldb
-    volumes:
-      - /data/springboot-app
     
   mysqldb:
-    image: mysql:5.7
-    networks:
-      - springboot-db-net
+    image: mysql:8.0.27
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=sbms
+        DATABASE_HOST: docker-mysql
+        DATABASE_PORT: 3306
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE : sbms
+        MYSQL_USER: admin
+        MYSQL_PASSWORD: root
     volumes:
       - /data/mysql
 networks:
